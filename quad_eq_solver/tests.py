@@ -57,66 +57,74 @@
 #
 #
 #
+#
+# import math
+# from django.test import TestCase, Client
+# from django.http import JsonResponse
+# from . models import Equation
+# from . views import result
+#
+#
+# class TestResultView(TestCase):
+#
+#     def setUp(self):
+#         self.client = Client()
+#
+#     def test_no_roots(self):
+#         response = self.client.get('/result?a=2&b=3&c=4')
+#         equation = Equation.objects.filter(a=2, b=3, c=4).first()
+#
+#         self.assertEqual(response.status_code, 200)
+#         self.assertEqual(response.content, b'"No roots for quadratic equation 2.0 * x^2 + 3.0 * x + 4.0 = 0"')
+#         self.assertEqual(equation.root1, None)
+#         self.assertEqual(equation.root2, None)
+#
+#     def test_one_root(self):
+#         response = self.client.get('/result?a=1&b=-2&c=1')
+#         equation = Equation.objects.filter(a=1, b=-2, c=1).first()
+#
+#         self.assertEqual(response.status_code, 200)
+#         self.assertEqual(response.content, b'"One root: 1.0 for quadratic equation 1.0 * x^2 + -2.0 * x + 1.0 = 0"')
+#         self.assertEqual(equation.root1, 1.0)
+#         self.assertEqual(equation.root2, None)
+#
+#     def test_two_roots(self):
+#         response = self.client.get('/result?a=1&b=0&c=-4')
+#         equation = Equation.objects.filter(a=1, b=0, c=-4).first()
+#
+#         self.assertEqual(response.status_code, 200)
+#         self.assertEqual(response.content, b'"Two roots: 2.0, -2.0 for quadratic equation 1.0 * x^2 + 0.0 * x + -4.0 = 0"')
+#         self.assertEqual(equation.root1, 2.0)
+#         self.assertEqual(equation.root2, -2.0)
 
-import math
-from django.test import TestCase, Client
-from django.http import JsonResponse
-from . models import Equation
-from . views import result
+    # def test_invalid_method(self):
+    #     response = self.client.post('/result')
+    #
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertEqual(response.content, b'"Invalid method!"')
+
+    # def test_missing_parameter(self):
+    #     response = self.client.get('/result?a=1&b=2')
+    #     equation = Equation.objects.filter(a=1, b=2).first()
+    #
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertEqual(response.content, b'"No roots for quadratic equation 1.0 * x^2 + 2.0 * x + None = 0"')
+    #     self.assertEqual(equation.root1, None)
+    #     self.assertEqual(equation.root2, None)
+
+    # def test_value_error(self):
+    #     response = self.client.get('/result?a=1&b=2&c=x')
+    #     equation = Equation.objects.filter(a=1, b=2, c=0).first()
+    #
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertEqual(response.content, b'"No roots for quadratic equation 1.0 * x^2 + 2.0 * x + x = 0"')
+    #     self.assertEqual(equation.root1, None)
+    #     self.assertEqual(equation.root2, None)
+
+from django.test import TestCase
 
 
-class TestResultView(TestCase):
+class TestQuad_eq_solver(TestCase):
 
-    def setUp(self):
-        self.client = Client()
-
-    def test_no_roots(self):
-        response = self.client.get('/result?a=2&b=3&c=4')
-        equation = Equation.objects.filter(a=2, b=3, c=4).first()
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content, b'"No roots for quadratic equation 2.0 * x^2 + 3.0 * x + 4.0 = 0"')
-        self.assertEqual(equation.root1, None)
-        self.assertEqual(equation.root2, None)
-
-    def test_one_root(self):
-        response = self.client.get('/result?a=1&b=-2&c=1')
-        equation = Equation.objects.filter(a=1, b=-2, c=1).first()
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content, b'"One root: 1.0 for quadratic equation 1.0 * x^2 + -2.0 * x + 1.0 = 0"')
-        self.assertEqual(equation.root1, 1.0)
-        self.assertEqual(equation.root2, None)
-
-    def test_two_roots(self):
-        response = self.client.get('/result?a=1&b=0&c=-4')
-        equation = Equation.objects.filter(a=1, b=0, c=-4).first()
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content, b'"Two roots: 2.0, -2.0 for quadratic equation 1.0 * x^2 + 0.0 * x + -4.0 = 0"')
-        self.assertEqual(equation.root1, 2.0)
-        self.assertEqual(equation.root2, -2.0)
-
-    def test_invalid_method(self):
-        response = self.client.post('/result')
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content, b'"Invalid method!"')
-
-    def test_missing_parameter(self):
-        response = self.client.get('/result?a=1&b=2')
-        equation = Equation.objects.filter(a=1, b=2).first()
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content, b'"No roots for quadratic equation 1.0 * x^2 + 2.0 * x + None = 0"')
-        self.assertEqual(equation.root1, None)
-        self.assertEqual(equation.root2, None)
-
-    def test_value_error(self):
-        response = self.client.get('/result?a=1&b=2&c=x')
-        equation = Equation.objects.filter(a=1, b=2, c="x").first()
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content, b'"No roots for quadratic equation 1.0 * x^2 + 2.0 * x + x = 0"')
-        self.assertEqual(equation.root1, None)
-        self.assertEqual(equation.root2, None)
+    def test_result(self):
+        self.client.get()

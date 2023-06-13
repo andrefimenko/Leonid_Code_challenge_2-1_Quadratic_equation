@@ -10,6 +10,10 @@ def result(request):
         b = float(request.GET.get("b"))
         c = float(request.GET.get("c"))
 
+        """Validating the equation."""
+        if a == 0:
+            return JsonResponse("Invalid parameter a = 0.", safe=False)
+
         """Calculating roots."""
         d = b**2 - 4 * a * c
 
@@ -28,9 +32,9 @@ def result(request):
         else:
             root1 = (-b + math.sqrt(d)) / 2 * a
             root2 = (-b - math.sqrt(d)) / 2 * a
-            Equation.obgects.cteate(a=a, b=b, c=c, root1=root1, root2=root2)
+            Equation.objects.create(a=a, b=b, c=c, root1=root1, root2=root2)
             return JsonResponse(f"Two roots: {root1}, {root2} for quadratic"
                                 f" equation {a} * x^2 + {b} * x + {c} = 0",
                                 safe=False)
     else:
-        return JsonResponse("Invalid method!")
+        return JsonResponse("Invalid method!", safe=False)
